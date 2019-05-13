@@ -43,15 +43,19 @@ func TestDockerfileContent(t *testing.T) {
 	if err != nil {
 		t.Error(err)
 	}
-
 	dsExpected := dockerfileStruct{"", filepath.Join("tests", "expectedDockerfile")}
 	expected, err := dsExpected.dockerfileContent()
 	if err != nil {
 		t.Error(err)
 	}
-
 	if !bytes.Equal(expected, actual) {
 		t.Errorf("Expected: '%s'. Actual: '%s'", expected, actual)
+	}
+
+	actualError := dockerfileStruct{"someProject", "this/DockerfileDoesNotExist"}.dockerfile()
+	expectedError := "open this/DockerfileDoesNotExist: no such file or directory"
+	if expectedError != actualError.Error() {
+		t.Errorf("Expected: '%v'. Actual: '%v'", expectedError, actualError)
 	}
 }
 
