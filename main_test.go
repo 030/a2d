@@ -5,6 +5,7 @@ import (
 	"io/ioutil"
 	"os"
 	"path/filepath"
+	"runtime"
 	"testing"
 
 	log "github.com/sirupsen/logrus"
@@ -55,8 +56,11 @@ func TestDockerfileContent(t *testing.T) {
 }
 
 func shutdown() {
-	err := os.Remove(testDockerFile)
-	if err != nil {
-		log.Fatal(err)
+	// Windows: 'The process cannot access the file because it is being used by another process'
+	if runtime.GOOS != "windows" {
+		err := os.Remove(testDockerFile)
+		if err != nil {
+			log.Fatal(err)
+		}
 	}
 }
