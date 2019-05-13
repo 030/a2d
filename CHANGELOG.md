@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 ### Added
 - Described 'how to use this tool' in README.
+- Travis CI enabled.
+- Multiple badges added to README.
+- Sonar analysis enabled.
 
 ## [1.0.0] - 2019-05-13
 
