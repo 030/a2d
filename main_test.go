@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"io/ioutil"
 	"os"
+	"path/filepath"
 	"testing"
 
 	log "github.com/sirupsen/logrus"
@@ -42,7 +43,7 @@ func TestDockerfileContent(t *testing.T) {
 		t.Error(err)
 	}
 
-	dsExpected := dockerfileStruct{"", "tests/expectedDockerfile"}
+	dsExpected := dockerfileStruct{"", filepath.Join("tests", "expectedDockerfile")}
 	expected, err := dsExpected.dockerfileContent()
 	if err != nil {
 		t.Error(err)

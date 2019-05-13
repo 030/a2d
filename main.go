@@ -23,7 +23,7 @@ func (ds dockerfileStruct) dockerfile() error {
 
 	t, err := template.New(ds.fileName).Parse(`FROM golang:1.12.4-alpine as builder
 COPY . ./{{.ProjectName}}/
-WORKDIR projectName
+WORKDIR {{.ProjectName}}
 RUN adduser -D -g '' {{.ProjectName}} && \
     apk add git && \
     CGO_ENABLED=0 go build && \
