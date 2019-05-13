@@ -52,10 +52,13 @@ func TestDockerfileContent(t *testing.T) {
 		t.Errorf("Expected: '%s'. Actual: '%s'", expected, actual)
 	}
 
-	actualError := dockerfileStruct{"someProject", "this/DockerfileDoesNotExist"}.dockerfile()
-	expectedError := "open this/DockerfileDoesNotExist: no such file or directory"
-	if expectedError != actualError.Error() {
-		t.Errorf("Expected: '%v'. Actual: '%v'", expectedError, actualError)
+	// Windows: 'The system cannot find the path specified'
+	if runtime.GOOS != "windows" {
+		actualError := dockerfileStruct{"someProject", "this/DockerfileDoesNotExist"}.dockerfile()
+		expectedError := "open this/DockerfileDoesNotExist: no such file or directory"
+		if expectedError != actualError.Error() {
+			t.Errorf("Expected: '%v'. Actual: '%v'", expectedError, actualError)
+		}
 	}
 }
 
