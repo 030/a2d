@@ -1,6 +1,6 @@
 FROM golang:1.12.4-alpine as builder
 COPY . ./ola/
-WORKDIR projectName
+WORKDIR ola
 RUN adduser -D -g '' ola && \
     apk add git && \
     CGO_ENABLED=0 go build && \
