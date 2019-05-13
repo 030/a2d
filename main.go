@@ -12,15 +12,16 @@ import (
 
 type dockerfileStruct struct {
 	ProjectName string
+	fileName    string
 }
 
 func (ds dockerfileStruct) dockerfile() error {
-	f, err := os.Create("Dockerfile")
+	f, err := os.Create(ds.fileName)
 	if err != nil {
 		return err
 	}
 
-	t, err := template.New("Dockerfile").Parse(`FROM golang:1.12.4-alpine as builder
+	t, err := template.New(ds.fileName).Parse(`FROM golang:1.12.4-alpine as builder
 COPY . ./{{.ProjectName}}/
 WORKDIR projectName
 RUN adduser -D -g '' {{.ProjectName}} && \
@@ -48,42 +49,44 @@ ENTRYPOINT ["/usr/local/{{.ProjectName}}"]
 	return nil
 }
 
-func dockerfileContent() error {
-	data, err := ioutil.ReadFile("Dockerfile")
+func (ds dockerfileStruct) dockerfileContent() ([]byte, error) {
+	data, err := ioutil.ReadFile(ds.fileName)
 	if err != nil {
-		return err
+		return nil, err
 	}
-	log.Debug(string(data))
-	return nil
+	return data, nil
 }
 
-func validation() (string, error) {
+func validation() (string, string, error) {
 	pn := flag.String("projectName", "", "The name of the app that has to be dockerized")
+	f := flag.String("dockerfile", "Dockerfile", "The name of the Dockerfile that has to be created")
 	d := flag.Bool("debug", false, "Whether debug level should be enabled")
 
 	flag.Parse()
 
 	if *pn == "" {
-		return "", errors.New("projectName should not be empty")
+		return "", "", errors.New("projectName should not be empty")
 	}
 
 	if *d {
 		log.SetLevel(log.DebugLevel)
 	}
 
-	return *pn, nil
+	return *pn, *f, nil
 }
 
 func main() {
-	pn, err := validation()
+	pn, f, err := validation()
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	dockerfileStruct{pn}.dockerfile()
+	ds := dockerfileStruct{pn, f}
+	ds.dockerfile()
 
-	err = dockerfileContent()
+	b, err := ds.dockerfileContent()
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Debug(string(b))
 }
