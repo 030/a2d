@@ -10,5 +10,5 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [1.0.0] - 2019-05-13
 
-[Unreleased]: https://github.com/030/n3dr/compare/1.0.0...HEAD
-[1.0.0]: https://github.com/030/n3dr/releases/tag/1.0.0
+[Unreleased]: https://github.com/030/a2d/compare/1.0.0...HEAD
+[1.0.0]: https://github.com/030/a2d/releases/tag/1.0.0
