@@ -15,8 +15,7 @@ matrix:
 addons:
   sonarcloud:
     organization: 030-github
-    token:
-      secure: $SONAR_TOKEN
+    token: $SONAR_TOKEN
 script:
   - diff -u <(echo -n) <(gofmt -d ./)
   - export DELIVERABLE="a2d-${TRAVIS_OS_NAME}"
